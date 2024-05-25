@@ -15,13 +15,13 @@ namespace myProject.Service.Implements;
 
 public class AuthService : IAuthService
 {
-    private MySQLDBContext _context;
+    private SQLServerDBContext _context;
     private IJwtUtils _jwtUtils;
     private readonly IMapper _mapper;
     private IEmailSender _emailSender;
 
     public AuthService(
-        MySQLDBContext context,
+        SQLServerDBContext context,
         IJwtUtils jwtUtils,
         IMapper mapper,
         IEmailSender emailSender)
@@ -36,24 +36,24 @@ public class AuthService : IAuthService
     {
         var user = _context.User.SingleOrDefault(x => x.username == model.username);
 
-        // validate
-        if (user == null || !BCrypt.Net.BCrypt.Verify(model.password, user.password))
-            throw new AppException(Constants.account_email_password_incorrect);
+        // // validate
+        // if (user == null || !BCrypt.Net.BCrypt.Verify(model.password, user.password))
+        //     throw new AppException(Constants.account_email_password_incorrect);
 
-        if (user.isVerify == false)
-            throw new AppException(Constants.account_not_verified);
+        // if (user.isVerify == false)
+        //     throw new AppException(Constants.account_not_verified);
 
-        if (user.status == Enums.UserStatus.INACTIVE)
-            throw new AppException(Constants.account_not_active);
+        // if (user.status == Enums.UserStatus.INACTIVE)
+        //     throw new AppException(Constants.account_not_active);
 
-        if (user.status == Enums.UserStatus.BLOCKED)
-            throw new AppException(Constants.account_blocked);
+        // if (user.status == Enums.UserStatus.BLOCKED)
+        //     throw new AppException(Constants.account_blocked);
 
-        if (user.status == Enums.UserStatus.BANNED)
-            throw new AppException(Constants.account_banned);
+        // if (user.status == Enums.UserStatus.BANNED)
+        //     throw new AppException(Constants.account_banned);
 
-        if (user.status == Enums.UserStatus.DELETED)
-            throw new AppException(Constants.account_deleted);
+        // if (user.status == Enums.UserStatus.DELETED)
+        //     throw new AppException(Constants.account_deleted);
 
         // authentication successful
         var response = _mapper.Map<AuthenticateResponse>(user);

@@ -1,0 +1,138 @@
+<div class="d-flex align-items-center justify-content-between">
+    <a href="/" class="logo d-flex align-items-center">
+        <img src="~/assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">Library</span>
+    </a>
+    <i class="bi bi-list toggle-sidebar-btn"></i>
+</div><!-- End Logo -->
+
+<div class="search-bar">
+    <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+    </form>
+</div><!-- End Search Bar -->
+
+<nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+            <a class="nav-link nav-icon search-bar-toggle " href="#">
+                <i class="bi bi-search"></i>
+            </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown pe-3">
+
+            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle avatar_user">
+                <span class="d-none d-md-block dropdown-toggle ps-2 username_user">K. Anderson</span>
+            </a><!-- End Profile Iamge Icon -->
+
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <li class="dropdown-header">
+                    <h6 class="fullname_user"></h6>
+                    <span class="role_user"></span>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="/Home/Profile">
+                        <i class="bi bi-person"></i>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <i class="bi bi-gear"></i>
+                        <span>Account Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <i class="bi bi-question-circle"></i>
+                        <span>Need Help?</span>
+                    </a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" onclick="logoutFunction();">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Sign Out</span>
+                    </a>
+                </li>
+
+            </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+    </ul>
+</nav><!-- End Icons Navigation -->
+
+<script>
+    if (localStorage.getItem("token") == null || localStorage.getItem("role") == null || localStorage.getItem("id") == null) {
+        window.location.href = '/Home/NotFound';
+    }
+
+    myFunctionProfileViews();
+    
+    function myFunctionProfileViews() {
+        fetch('https://localhost:7155/api/user/detail/' + localStorage.getItem("id"), {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            },
+        })
+            .then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                }
+            })
+            .then((response) => {
+                console.log(response);
+                let fullname = response.fullName;
+                let gender = response.gender;
+                let birthday = response.birthday;
+                let avt = response.avatar;
+                let address = response.addressInfo;
+                let phonenumber = response.phoneNum;
+                let email = response.userEmail;
+                let username = response.userName;
+                let role = response.userRole;
+
+                $('.avatar_user').attr("src", avt);
+                $('.username_user').text(username);
+                $('.fullname_user').text(fullname);
+                $('.role_user').text(role);
+                $('.gender_user').text(gender);
+                $('.birthday_user').text(birthday);
+                $('.phone_user').text(phonenumber);
+                $('.email_user').text(email);
+                $('.address_user').text(address);
+
+                $('#username').val(username);
+                $('#FullName').val(fullname);
+                $('#gender').val(gender);
+                $('#birthday').val(birthday);
+                $('#phoneNumber').val(phonenumber);
+                $('#email').val(email);
+                $('#address').val(address);
+
+
+            })
+            .catch(error => console.log(error));
+    }
+</script>

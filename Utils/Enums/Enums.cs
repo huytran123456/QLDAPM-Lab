@@ -17,13 +17,6 @@ public class Enums
         DELETED
     }
     
-    public enum CategoryStatus
-    {
-        ACTIVE,
-        INACTIVE,
-        DELETED
-    }
-    
     public enum BookStatus
     {
         ACTIVE,
@@ -31,12 +24,11 @@ public class Enums
         DELETED
     }
     
-    public enum OrderStatus
+    public enum BorrowStatus
     {
-        PREPARING, 
-        DELIVERY, 
-        SUCCESS, 
-        FAIL, 
+        PENDING,
+        RETURN,
+        RENT,
         DELETED
     }
 }

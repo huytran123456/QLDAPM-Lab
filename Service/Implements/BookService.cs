@@ -10,17 +10,17 @@ namespace myProject.Service.Implements;
 
 public class BookService : IBookService
 {
-    private MySQLDBContext _context;
+    private readonly SQLServerDBContext _context;
     private readonly IMapper _mapper;
-    
+
     public BookService(
-        MySQLDBContext context,
+        SQLServerDBContext context,
         IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
-    
+
     public IEnumerable<Books> GetAll()
     {
         return _context.Books.Where(v => v.status != Enums.BookStatus.DELETED).ToList();
@@ -34,78 +34,62 @@ public class BookService : IBookService
 
     public Books GetById(int id)
     {
-        return getBooks(id);
+        return GetBooks(id);
     }
 
     public BookResponse GetByIdAndStatus(int id)
     {
-        return getBooksByIdAndStatus(id);
+        return GetBooksByIdAndStatus(id);
     }
 
     public void Update(int id, UpdateBookRequest model)
     {
-        var Books = getBooks(id);
-        
-        if(model.title == null)
-            throw new AppException("Title invalid!");
-        Books.UpdatedAt = DateTimeOffset.Now.AddHours(7);
-        var categories = _context.Categories.Find(model.category_id);
-        if (categories == null)
-        {
-            throw new KeyNotFoundException("Categories not found");
-        }
-        _mapper.Map(model, Books);
-        _context.Books.Update(Books);
+        var book = GetBooks(id);
+        model.thumbnail ??= book.thumbnail;
+        book.UpdatedAt = DateTimeOffset.Now.AddHours(7);
+        _mapper.Map(model, book);
+        _context.Books.Update(book);
         _context.SaveChanges();
     }
 
     public void Delete(int id)
     {
-        var Books = getBooks(id);
-        Books.status = Enums.BookStatus.DELETED;
-        Books.DeletedAt = DateTimeOffset.Now.AddHours(7);
-        _context.Books.Update(Books);
+        var book = GetBooks(id);
+        book.status = Enums.BookStatus.DELETED;
+        book.DeletedAt = DateTimeOffset.Now.AddHours(7);
+        _context.Books.Update(book);
         _context.SaveChanges();
     }
 
     public void Create(CreateBookRequest model)
     {
-        var Books = _mapper.Map<Books>(model);
+        var book = _mapper.Map<Books>(model);
 
         if (model.title == null)
         {
             throw new AppException("Title invalid!");
         }
-        var categories = _context.Categories.Find(model.category_id);
-        if (categories == null)
-        {
-            throw new KeyNotFoundException("Categories not found");
-        }
-        Books.CreatedAt = DateTimeOffset.Now.AddHours(7);
 
-        _context.Books.Add(Books);
+        book.CreatedAt = DateTimeOffset.Now.AddHours(7);
+
+        _context.Books.Add(book);
         _context.SaveChanges();
     }
-    
-    private Books getBooks(int id)
+
+    private Books GetBooks(int id)
     {
-        var Books = _context.Books.Find(id);
-        if (Books == null || Books.status == Enums.BookStatus.DELETED) 
-            throw new KeyNotFoundException("Insurance not found");
-        return Books;
+        var books = _context.Books.Find(id);
+        if (books == null || books.status == Enums.BookStatus.DELETED)
+            throw new KeyNotFoundException("Books not found");
+        return books;
     }
-    
-    private BookResponse getBooksByIdAndStatus(int id)
+
+    private BookResponse GetBooksByIdAndStatus(int id)
     {
-        var Books = _context.Books.Find(id);
-        if (Books == null || Books.status != Enums.BookStatus.ACTIVE) 
-            throw new KeyNotFoundException("Insurance not found");
-        var category = _context.Categories.Find(Books.category_id);
-        if (category == null)
-        {
-            throw new KeyNotFoundException("Insurance not found"); 
-        }
-        var response = _mapper.Map<BookResponse>(Books);
+        var books = _context.Books.Find(id);
+        if (books == null || books.status != Enums.BookStatus.ACTIVE)
+            throw new KeyNotFoundException("Books not found");
+        var response = _mapper.Map<BookResponse>(books);
         return response;
     }
 }

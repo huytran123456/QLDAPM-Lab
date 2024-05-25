@@ -2,7 +2,7 @@
 
 public class BufferedFileUploadLocalService : IBufferedFileUploadService
 {
-    public async Task<bool> UploadFile(IFormFile file)
+    public async Task<string> UploadFile(IFormFile file)
     {
         string path = "";
         string time = "";
@@ -12,20 +12,24 @@ public class BufferedFileUploadLocalService : IBufferedFileUploadService
         {
             if (file.Length > 0)
             {
-                path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "Resources/Storage/Image"));
+                path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "wwwroot/Storage/Image"));
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
-                using (var fileStream = new FileStream(Path.Combine(path ,time + "_" + file.FileName), FileMode.Create))
+
+                string imageName = time + "_" + file.FileName;
+                using (var fileStream = new FileStream(Path.Combine(path, imageName), FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
                 }
-                return true;
+
+                string newPath = "/Storage/Image/" + imageName;
+                return newPath;
             }
             else
             {
-                return false;
+                throw new Exception("No file");
             }
         }
         catch (Exception ex)
@@ -34,19 +38,20 @@ public class BufferedFileUploadLocalService : IBufferedFileUploadService
         }
     }
 
-    public async Task<bool> DeleteFile(string image)
+
+    public Task<bool> DeleteFile(string image)
     {
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "Resources\\Storage\\Image\\" , image);
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Storage/Image", image);
         try
         {
             if (File.Exists(path))
             {
                 File.Delete(path);
-                return true;
+                return Task.FromResult(true);
             }
             else
             {
-                throw new Exception("File path not found");  
+                throw new Exception("File path not found");
             }
         }
         catch (Exception e)
@@ -55,9 +60,9 @@ public class BufferedFileUploadLocalService : IBufferedFileUploadService
         }
     }
 
-    public async  Task<string> ViewFile(string image)
+    public async Task<string> ViewFile(string image)
     {
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "Resources\\Storage\\Image\\" , image);
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Storage/Image", image);
         try
         {
             if (File.Exists(path))
@@ -66,12 +71,12 @@ public class BufferedFileUploadLocalService : IBufferedFileUploadService
             }
             else
             {
-                throw new Exception("File not found");  
+                throw new Exception("File not found");
             }
         }
         catch (Exception e)
         {
             throw new Exception("Views file fail", e);
-        }  
+        }
     }
 }

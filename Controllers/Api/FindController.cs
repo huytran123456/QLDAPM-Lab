@@ -11,16 +11,10 @@ namespace myProject.Controllers;
 public class FindController : ControllerBase
 {
     private IFindUserService _findUserService;
-    private IMapper _mapper;
-    private readonly AppSettings _appSettings;
     
-    public FindController(
-        IFindUserService findUserService,
-        IMapper mapper,
-        IOptions<AppSettings> appSettings)
+    public FindController(IFindUserService findUserService)
     {
         _findUserService = findUserService;
-        _mapper = mapper;
     }
     
     [HttpGet("user-by-email/{email}")]

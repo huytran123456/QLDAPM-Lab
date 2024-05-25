@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Books Manage</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/assets/img/favicon.png" rel="icon">
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+</header>
+<!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+</aside>
+<!-- End Sidebar-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Books Manage</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/Admin">Home</a>
+                </li>
+                <li class="breadcrumb-item active">Detail Book</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section" id="section">
+        <form id="formCreate" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Please enter title!">
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="author">Author</label>
+                    <input type="text" class="form-control" id="author" name="author" required="required">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="genre">Genre</label>
+                    <input type="text" class="form-control" id="genre" name="genre" required="required">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="publisher">Publisher</label>
+                    <input type="text" class="form-control" id="publisher" name="publisher" required="required">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="publish_date">Publish Date</label>
+                    <input type="datetime-local" class="form-control" id="publish_date" name="publish_date" required="required">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="5" required=""></textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="file">Thumbnail</label>
+                    <input type="file" class="form-control" id="file" name="file" accept="image/*">
+                    <img src="#" alt="" id="img-book" width="100px">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" required="required">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="status">Status</label>
+                    <select id="status" class="form-select" name="status">
+                        <option value="0">ACTIVE</option>
+                        <option value="1">INACTIVE</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" id="btnCreate" class="btn btn-primary mt-3" onclick="updateCategory();">Save</button>
+        </form>
+    </section>
+
+</main>
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+
+</footer>
+<!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i
+        class="bi bi-arrow-up-short">
+    </i>
+</a>
+
+<!-- Vendor JS Files -->
+<script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="~/assets/vendor/echarts/echarts.min.js"></script>
+<script src="~/assets/vendor/quill/quill.min.js"></script>
+<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="~/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="~/assets/js/main.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#header').load("../../includes/header.html");
+    $('#footer').load("../../includes/footer.html");
+    $('#sidebar').load("../../includes/sidebar.html");
+  });
+  
+  showCategory();
+  
+  async function showCategory() {
+      let url = window.location.href;
+      let parts = url.split('/');
+      let id = parts[parts.length - 1];
+      
+      let result = await fetch('/admin/api/books/detail/'+id, {
+          method: 'GET',
+          headers: {
+              'content-type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem("token")}`
+          }
+
+      });
+
+      if (result.ok) {
+          let res = await result.json();
+          renderCategory(res);
+      }
+  }
+  
+  function renderCategory(data) {
+     let title = data.title;
+     let author = data.author;
+     let genre = data.genre;
+     let publisher = data.publisher;
+     let publish_date = data.publish_date;
+     let description = data.description;
+     let thumbnail = data.thumbnail;
+     let quantity = data.quantity;
+
+      var date = new Date(publish_date);
+      var year = date.getFullYear();
+      var month = String(date.getMonth() + 1).padStart(2, '0'); 
+      var day = String(date.getDate()).padStart(2, '0');
+      var hours = String(date.getHours()).padStart(2, '0');
+      var minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      var formattedDate = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+     
+     $('#title').val(title)
+     $('#author').val(author)
+     $('#genre').val(genre)
+     $('#publisher').val(publisher)
+     $('#publish_date').val(formattedDate)
+     $('#description').val(description)
+     $('#img-book').attr('src', thumbnail);
+     $('#quantity').val(quantity)
+      setSelectedOption('status', data.status);
+  }
+
+  function setSelectedOption(selectId, value) {
+      var selectElement = document.getElementById(selectId);
+      var options = selectElement.options;
+      for (var i = 0; i < options.length; i++) {
+          if (options[i].value === value) {
+              options[i].selected = true;
+              break;
+          }
+      }
+  }
+  
+    async function updateCategory() {
+        let url = window.location.href;
+        let parts = url.split('/');
+        let id = parts[parts.length - 1];
+        
+          $('#btnCreate').prop('disabled', true).text('Saving...');
+        
+        
+        let inputs = $('#formCreate input, #formCreate textarea, #formCreate select');
+        for (let i = 0; i < inputs.length; i++) {
+            if (!$(inputs[i]).val() && $(inputs[i]).attr('id') !== 'file') {
+                let text = $(inputs[i]).prev().text();
+                alert(text + ' not empty!');
+                $('#btnCreate').prop('disabled', false).text('Create');
+                return
+            }
+        }
+
+        const formData = new FormData($('#formCreate')[0]);
+
+        let headers = {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+
+        await $.ajax({
+            url: '/admin/api/books/'+id,
+            method: 'PUT',
+            headers: headers,
+            contentType: false,
+            cache: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                alert('Update success!')
+                window.location.href = '/AdminBook/List';
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                alert('Save error!');
+                $('#btnCreate').prop('disabled', false).text('Save');
+            }
+        });
+      }
+</script>
+</body>
+
+</html>

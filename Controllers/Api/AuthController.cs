@@ -14,16 +14,10 @@ namespace myProject.Controllers;
 public class AuthController : ControllerBase
 {
     private IAuthService _authService;
-    private IMapper _mapper;
-    private readonly AppSettings _appSettings;
 
-    public AuthController(
-        IAuthService authService,
-        IMapper mapper,
-        IOptions<AppSettings> appSettings)
+    public AuthController(IAuthService authService)
     {
         _authService = authService;
-        _mapper = mapper;
     }
 
     [AllowAnonymous]

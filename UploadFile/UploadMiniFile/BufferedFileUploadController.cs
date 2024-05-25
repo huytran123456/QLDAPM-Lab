@@ -20,7 +20,7 @@ public class BufferedFileUploadController : ControllerBase
     {
         try
         {
-            if (await _bufferedFileUploadService.UploadFile(file))
+            if (!string.IsNullOrEmpty(await _bufferedFileUploadService.UploadFile(file)))
             {
                 var  message = "File Upload Successful";
                 return Ok(message);

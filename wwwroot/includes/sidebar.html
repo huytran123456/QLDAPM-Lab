@@ -1,0 +1,81 @@
+<ul class="sidebar-nav" id="sidebar-nav">
+
+</ul>
+<script>
+    let html = `<li class="nav-item">
+        <a class="nav-link collapsed" href="/Admin">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#Categories-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-menu-button-wide"></i><span>Books</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="Categories-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="/AdminBook/List">
+                    <i class="bi bi-circle"></i><span>List Books</span>
+                </a>
+            </li>
+            <li>
+                <a href="/AdminBook/Create">
+                    <i class="bi bi-circle"></i><span>Create Books</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#Products-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-journal-text"></i><span>Borrows</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="Products-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="/AdminBorrow/List">
+                    <i class="bi bi-circle"></i><span>List Borrow</span>
+                </a>
+            </li>
+            <li>
+                <a href="/AdminBorrow/Create">
+                    <i class="bi bi-circle"></i><span>Create Borrow</span>
+                </a>
+            </li>
+        </ul>
+    </li>`;
+
+    let page = `<li class="nav-heading" id="page-heading">Pages</li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/Home/Profile">
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+            <i class="bi bi-card-list"></i>
+            <span>My Borrow</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+            <i class="bi bi-card-list"></i>
+            <span>Setting</span>
+        </a>
+    </li>`;
+
+    function renderAdmin() {
+        let role = localStorage.getItem('role');
+        if (role === 'ADMIN') {
+            $('#sidebar-nav').empty().append(html + page);
+        } else {
+            $('#sidebar-nav').empty().append(page);
+        }
+    }
+
+    renderAdmin();
+</script>

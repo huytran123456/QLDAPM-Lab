@@ -2,7 +2,7 @@
 
 public interface IBufferedFileUploadService
 {
-    Task<bool> UploadFile(IFormFile file);
+    Task<string> UploadFile(IFormFile file);
     
     Task<bool> DeleteFile(string image);
     Task<string> ViewFile(string image);

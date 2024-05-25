@@ -1,6 +1,7 @@
 using AutoMapper;
 using myProject.Dtos.Auth;
 using myProject.Dtos.Books;
+using myProject.Dtos.Borrow;
 using myProject.Dtos.User;
 using myProject.Entities;
 
@@ -32,5 +33,13 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateBookRequest, Books>();
         // UpdateBookRequest -> Books
         CreateMap<UpdateBookRequest, Books>();
+        
+        //Borrow
+        // Borrow -> BorrowResponse
+        CreateMap<Borrow, BookResponse>();
+        // CreateBorrow -> Borrow
+        CreateMap<CreateBorrow, Borrow>();
+        // UpdateBorrow -> Borrow
+        CreateMap<UpdateBorrow, Borrow>();
     }
 }

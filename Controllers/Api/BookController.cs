@@ -12,16 +12,10 @@ namespace myProject.Controllers;
 public class BookController : ControllerBase
 {
     private IBookService _bookService;
-    private IMapper _mapper;
-    private readonly AppSettings _appSettings;
     
-    public BookController(
-        IBookService bookService,
-        IMapper mapper,
-        IOptions<AppSettings> appSettings)
+    public BookController(IBookService bookService)
     {
         _bookService = bookService;
-        _mapper = mapper;
     }
     
     [HttpGet("list")]

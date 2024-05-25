@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Borrow Manage</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/assets/img/favicon.png" rel="icon">
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+</header>
+<!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+</aside>
+<!-- End Sidebar-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Borrow Manage</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/Admin">Home</a>
+                </li>
+                <li class="breadcrumb-item active">Create Borrow</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section" id="section">
+        <form id="form">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="UserId">User</label>
+                    <select id="UserId" class="form-select" name="UserId">
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="BookId">Book</label>
+                    <select id="BookId" class="form-select" name="BookId">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="BorrowDate">Borrow Date</label>
+                    <input type="datetime-local" class="form-control" id="BorrowDate" name="BorrowDate" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ReturnDate">Return Date</label>
+                    <input type="datetime-local" class="form-control" id="ReturnDate" name="ReturnDate" required>
+                </div>
+            </div>
+
+            <button type="button" id="btnCreate" class="btn btn-primary mt-3" onclick="createBorrow();">Create</button>
+        </form>
+    </section>
+
+</main>
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+
+</footer>
+<!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i
+        class="bi bi-arrow-up-short">
+    </i>
+</a>
+
+<!-- Vendor JS Files -->
+<script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="~/assets/vendor/echarts/echarts.min.js"></script>
+<script src="~/assets/vendor/quill/quill.min.js"></script>
+<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="~/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="~/assets/js/main.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#header').load("../../includes/header.html");
+        $('#footer').load("../../includes/footer.html");
+        $('#sidebar').load("../../includes/sidebar.html");
+    });
+
+  async function getListUser() {
+      let result = await fetch('/admin/api/user/list', {
+          method: 'GET',
+          headers: {
+              'content-type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem("token")}`
+          },
+      });
+
+      if (result.ok) {
+          let res = await result.json();
+          renderUser(res);
+      } else {
+          let res = await result.json();
+          console.log(res)
+          alert(res.message)
+      }
+  }
+
+    getListUser();
+
+    async function getListBook() {
+        let result = await fetch('/admin/api/books/list', {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            },
+        });
+
+        if (result.ok) {
+            let res = await result.json();
+            renderBook(res);
+        } else {
+            let res = await result.json();
+            console.log(res)
+            alert(res.message)
+        }
+    }
+
+    getListBook();
+  
+  function renderUser(res) {
+    let html = ``;
+      for (let i = 0; i < res.length; i++) {
+          let item = res[i];
+          html += ` <option value="${item.id}">${item.username}(${item.email})</option>`;
+      }
+      
+      $('#UserId').empty().append(html);
+  }
+
+    function renderBook(res) {
+        let html = ``;
+        for (let i = 0; i < res.length; i++) {
+            let item = res[i];
+            html += ` <option value="${item.id}">${item.title}-${item.author}-${item.publisher}</option>`;
+        }
+
+        $('#BookId').empty().append(html);
+    }
+
+  async function createBorrow() {
+      $('#btnCreate').prop('disabled', true).text('Creating...');
+
+      let data = {}
+      data['id'] = 0;
+      let inputs = $('#form input, #form textarea, #form select');
+      for (let i = 0; i < inputs.length; i++) {
+          if (!$(inputs[i]).val()) {
+              let text = $(inputs[i]).prev().text();
+              alert(text + ' not empty!');
+              $('#btnCreate').prop('disabled', false).text('Create');
+              return
+          }
+          data[$(inputs[i]).attr('id')] = $(inputs[i]).val();
+      }
+
+      let result = await fetch('/admin/api/borrows', {
+          method: 'POST',
+          headers: {
+              'content-type': 'application/json',
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
+          },
+          body: JSON.stringify(data),
+      });
+
+      if (result.ok) {
+          alert('Create success!')
+          window.location.href = '/AdminBorrow/List';
+      } else {
+          let res = await result.json();
+          alert(res.message)
+          $('#btnCreate').prop('disabled', false).text('Create');
+      }
+  }
+
+</script>
+</body>
+
+</html>

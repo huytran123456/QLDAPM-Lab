@@ -7,24 +7,18 @@ using myProject.Dtos.User;
 using myProject.Service.Interfaces;
 using myProject.Utils.Enums;
 
-namespace myProject.Controllers.Admin;
+namespace myProject.Controllers.Api.Admin;
 
 [Route("admin/api/user")]
 [Authorize]
 [ApiController]
 public class AdminUserController : ControllerBase
 {
-    private IUserService _userService;
-    private IMapper _mapper;
-    private readonly AppSettings _appSettings;
+    private readonly IUserService _userService;
     
-    public AdminUserController(
-        IUserService userService,
-        IMapper mapper,
-        IOptions<AppSettings> appSettings)
+    public AdminUserController(IUserService userService)
     {
         _userService = userService;
-        _mapper = mapper;
     }
     
     [HttpGet("list")]

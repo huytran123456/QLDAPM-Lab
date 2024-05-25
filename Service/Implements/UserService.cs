@@ -11,11 +11,11 @@ namespace myProject.Service.Implements;
 
 public class UserService : IUserService
 {
-    private MySQLDBContext _context;
+    private SQLServerDBContext _context;
     private readonly IMapper _mapper;
 
     public UserService(
-        MySQLDBContext context,
+        SQLServerDBContext context,
         IMapper mapper)
     {
         _context = context;

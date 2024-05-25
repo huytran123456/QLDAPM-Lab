@@ -1,6 +1,22 @@
 {
   "Files": [
     {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\Storage\\Image\\638492233229389020_chungcuhoanghuy.sql",
+      "PackagePath": "staticwebassets\\Storage\\Image\\638492233229389020_chungcuhoanghuy.sql"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\Storage\\Image\\638494583060605150_d.jpg",
+      "PackagePath": "staticwebassets\\Storage\\Image\\638494583060605150_d.jpg"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\Storage\\Image\\638494584322265090_d.jpg",
+      "PackagePath": "staticwebassets\\Storage\\Image\\638494584322265090_d.jpg"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\Storage\\Image\\638494585224630010_d.jpg",
+      "PackagePath": "staticwebassets\\Storage\\Image\\638494585224630010_d.jpg"
+    },
+    {
       "Id": "C:\\QLDAPM-Lab\\wwwroot\\assets\\css\\style.css",
       "PackagePath": "staticwebassets\\assets\\css\\style.css"
     },
@@ -1671,6 +1687,34 @@
     {
       "Id": "C:\\QLDAPM-Lab\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\images\\Tieu_thuyet_hay_Chien_tranh_va_hoa_binh_bd67032825.jpg",
+      "PackagePath": "staticwebassets\\images\\Tieu_thuyet_hay_Chien_tranh_va_hoa_binh_bd67032825.jpg"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\images\\doraemon.jpeg",
+      "PackagePath": "staticwebassets\\images\\doraemon.jpeg"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\images\\mat_biec.jpeg",
+      "PackagePath": "staticwebassets\\images\\mat_biec.jpeg"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\images\\nhung-cau-chuyen-thien-van-thu-vi-267269.jpeg",
+      "PackagePath": "staticwebassets\\images\\nhung-cau-chuyen-thien-van-thu-vi-267269.jpeg"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\includes\\footer.html",
+      "PackagePath": "staticwebassets\\includes\\footer.html"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\includes\\header.html",
+      "PackagePath": "staticwebassets\\includes\\header.html"
+    },
+    {
+      "Id": "C:\\QLDAPM-Lab\\wwwroot\\includes\\sidebar.html",
+      "PackagePath": "staticwebassets\\includes\\sidebar.html"
     },
     {
       "Id": "C:\\QLDAPM-Lab\\wwwroot\\js\\site.js",

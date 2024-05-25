@@ -1,19 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using myProject.Entities;
-using myProject.Entities.Location;
 
 namespace myProject.Context;
 
-public class MySQLDBContext : DbContext
+public class SQLServerDBContext : DbContext
 {
     public DbSet<User> User { get; set; }
     public DbSet<Books> Books { get; set; }
-    public DbSet<Categories> Categories { get; set; }
-    public DbSet<Location> Locations { get; set; }
-    public DbSet<Province> Provinces { get; set; }
-    public DbSet<City> Cities { get; set; }
+    public DbSet<Borrow> Borrows { get; set; }
     
-    public MySQLDBContext(DbContextOptions<MySQLDBContext> options) : base(options)
+    public SQLServerDBContext(DbContextOptions<SQLServerDBContext> options) : base(options)
     {
         
     }

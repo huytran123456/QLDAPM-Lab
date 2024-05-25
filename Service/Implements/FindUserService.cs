@@ -9,11 +9,11 @@ namespace myProject.Service.Implements;
 
 public class FindUserService : IFindUserService
 {
-    private MySQLDBContext _context;
+    private SQLServerDBContext _context;
     private readonly IMapper _mapper;
     
     public FindUserService(
-        MySQLDBContext context,
+        SQLServerDBContext context,
         IMapper mapper)
     {
         _context = context;
